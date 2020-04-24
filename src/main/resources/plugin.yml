@@ -1,0 +1,5 @@
+name: Votemine
+version: ${project.version}
+main: fr.kainovaii.votemine.Main
+authors: [KainoVaii]
+website: www.sation47.net
