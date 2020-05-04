@@ -1,5 +1,5 @@
-name: Votemine
+name: VotemineReward
 version: ${project.version}
 main: fr.kainovaii.votemine.Main
-authors: [KainoVaii]
-website: www.sation47.net
+authors: [HOVOH]
+website: votemine.com
