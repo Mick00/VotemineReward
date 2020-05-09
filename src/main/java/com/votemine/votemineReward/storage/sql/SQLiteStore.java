@@ -15,7 +15,7 @@ public class SQLiteStorage extends SQLStorage{
             Connection connection = open();
             DatabaseMetaData meta = connection.getMetaData();
             initDatabase();
-            connection.close();
+            close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

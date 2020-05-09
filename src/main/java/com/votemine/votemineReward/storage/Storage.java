@@ -1,13 +1,4 @@
-package com.votemine.votemineReward.storage;
+package com.votemine.votemineReward.storage.sql;
 
-import com.votemine.votemineReward.models.PointsBalance;
-import com.votemine.votemineReward.models.Transaction;
-
-import java.util.List;
-
-public interface Storage {
-
-    PointsBalance getBalance(String uuid);
-    List<Transaction> getTransactions(String uuid);
-    void insert(Transaction transaction);
+public class Storage {
 }
