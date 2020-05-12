@@ -1,6 +1,6 @@
 package com.votemine.votemineReward.models;
 
-import com.votemine.votemineReward.storage.sql.SQLStorage;
+import com.votemine.votemineReward.storage.sql.SQLStore;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,9 +9,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class PointsBalanceSQL implements PointsBalance {
 
     private String uuid;
-    private SQLStorage storage;
+    private SQLStore storage;
 
-    public PointsBalanceSQL(String uuid, SQLStorage storage){
+    public PointsBalanceSQL(String uuid, SQLStore storage){
         this.uuid = uuid;
         this.storage = storage;
     }
@@ -24,8 +24,9 @@ public class PointsBalanceSQL implements PointsBalance {
             storage.execPreparedStatement(getPlayerPointsQuery, preparedStatement -> {
                 preparedStatement.setString(1, uuid);
                 ResultSet result = preparedStatement.executeQuery();
-                result.next();
-                points.set(result.getInt("points"));
+                if (result.next()){
+                    points.set(result.getInt("points"));
+                }
             });
         } catch (SQLException e) {
             e.printStackTrace();

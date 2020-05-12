@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public class SQLQuery {
 
-    private SQLStorage storage;
+    private SQLStore storage;
 
-    public SQLQuery(SQLStorage storage){
+    public SQLQuery(SQLStore storage){
      this.storage = storage;
     }
 

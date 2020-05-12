@@ -3,13 +3,12 @@ package com.votemine.votemineReward.storage.sql;
 import com.votemine.votemineReward.models.PointsBalance;
 import com.votemine.votemineReward.models.PointsBalanceSQL;
 import com.votemine.votemineReward.models.Transaction;
-import com.votemine.votemineReward.storage.Storage;
-
+import com.votemine.votemineReward.storage.Store;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SQLStorage implements Storage {
+public abstract class SQLStore implements Store {
 
     public abstract Connection open() throws SQLException;
     public abstract void close();

@@ -5,7 +5,7 @@ import com.votemine.votemineReward.models.Transaction;
 
 import java.util.List;
 
-public interface Storage {
+public interface Store {
 
     PointsBalance getBalance(String uuid);
     List<Transaction> getTransactions(String uuid);

@@ -5,17 +5,17 @@ import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class SQLiteStorage extends SQLStorage{
+public class SQLiteStore extends SQLStore {
 
     private Connection connection;
 
 
-    public SQLiteStorage(){
+    public SQLiteStore(){
         try {
             Connection connection = open();
             DatabaseMetaData meta = connection.getMetaData();
             initDatabase();
-            close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

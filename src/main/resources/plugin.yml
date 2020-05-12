@@ -1,5 +1,9 @@
 name: VotemineReward
 version: ${project.version}
-main: fr.kainovaii.votemine.Main
+api-version: "1.15"
+main: com.votemine.votemineReward.VotemineReward
 authors: [HOVOH]
 website: votemine.com
+commands:
+  voteminereward:
+    aliases: ['voteshop','vmr']
