@@ -1,6 +1,5 @@
 package com.votemine.votemineReward;
 
-import co.aikar.locales.MessageKey;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;

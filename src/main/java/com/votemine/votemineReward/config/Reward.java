@@ -26,4 +26,9 @@ public class Reward {
     public String getCommand() {
         return command;
     }
+
+    public String getFilledCommand(String playername){
+        return command.replace("%playername%", playername)
+                .replace("%price%",String.valueOf(price));
+    }
 }

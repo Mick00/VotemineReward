@@ -3,6 +3,7 @@ package com.votemine.votemineReward;
 import co.aikar.commands.PaperCommandManager;
 import co.aikar.locales.MessageKey;
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class Message {
@@ -24,10 +25,12 @@ public class Message {
         send(path,sender,false, values);
     }
 
+    public static void sendWithHeader(String path, CommandSender sender, String... values){
+        send(path,sender,true, values);
+    }
+
     private static void send(String path, CommandSender sender, boolean addHeader, String... values){
-        String msg =  manager.getLocales().getMessage(
-                manager.getCommandIssuer(sender),
-                MessageKey.of(path));
+        String msg =  trans(path,sender);
         for(int i = 0; i < values.length; i++){
             msg = msg.replace("{"+i+"}", values[i]);
         }
@@ -36,7 +39,10 @@ public class Message {
         }
         sender.sendMessage(msg);
     }
-    public static void sendWithHeader(String path, CommandSender sender, String... values){
-        send(path,sender,true, values);
+
+    public static String trans(String path, CommandSender sender){
+        return manager.getLocales().getMessage(
+                manager.getCommandIssuer(sender),
+                MessageKey.of(path));
     }
 }

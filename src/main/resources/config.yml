@@ -1,0 +1,27 @@
+storage:
+  type: SQLite
+  host: localhost
+  port: 3306
+  user: minevoter
+  password: Pa$$w0rd
+rewards:
+  congrats:
+    price: 1
+    command: say Merci %playername%. Ceci vaut %price% pv
+store:
+  storeName: "Minevote store"
+  slots:
+    1:
+      material: NAME_TAG
+      name: '&6Boutique de votes'
+      lore:
+        - Vous pouvez échanger
+        - vos votes contre des
+        - recompenses trop cool
+    2:
+      buyReward: congrats
+      material: DIAMOND_BLOCK
+      name: '&6Felicitation!'
+      lore:
+        - Une jolie &crecompense
+      count: 4

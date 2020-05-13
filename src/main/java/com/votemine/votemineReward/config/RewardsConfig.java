@@ -1,5 +1,6 @@
 package com.votemine.votemineReward.config;
 
+import com.votemine.votemineReward.exceptions.RewardNotFoundException;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;
@@ -30,7 +31,15 @@ public class RewardsConfig {
         return rewards;
     }
 
-    public Reward getReward(String name){
-        return rewards.get(name);
+    public Reward getReward(String name) throws RewardNotFoundException {
+        Reward reward = rewards.getOrDefault(name, null);
+        if (reward == null){
+            throw new RewardNotFoundException(name);
+        }
+        return reward;
+    }
+
+    public boolean rewardExists(String name){
+        return rewards.getOrDefault(name, null) != null;
     }
 }
