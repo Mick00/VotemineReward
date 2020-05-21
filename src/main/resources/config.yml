@@ -2,6 +2,7 @@ storage:
   type: SQLite
   host: localhost
   port: 3306
+  database: votemine
   user: minevoter
   password: Pa$$w0rd
 rewards:

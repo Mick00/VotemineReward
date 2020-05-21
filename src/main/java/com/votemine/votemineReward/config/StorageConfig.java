@@ -9,21 +9,24 @@ public class StorageConfig {
     private int port;
     private String user;
     private String password;
+    private String database;
 
     public static StorageConfig fromConfig(ConfigurationSection section){
         return new StorageConfig(
                 StorageType.valueOf(section.getString("type","SQLite")),
                 section.getString("host","localhost"),
                 section.getInt("port",3306),
+                section.getString("database", "default"),
                 section.getString("user","votemine"),
                 section.getString("password","")
         );
     }
 
-    public StorageConfig(StorageType type, String host, int port, String user, String password) {
+    public StorageConfig(StorageType type, String host, int port,String database, String user, String password) {
         this.type = type;
         this.host = host;
         this.port = port;
+        this.database = database;
         this.user = user;
         this.password = password;
     }
@@ -43,6 +46,8 @@ public class StorageConfig {
     public int getPort() {
         return port;
     }
+
+    public String getDatabase() { return database; }
 
     public String getUser() {
         return user;

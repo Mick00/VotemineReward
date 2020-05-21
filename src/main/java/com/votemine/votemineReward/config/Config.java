@@ -26,10 +26,12 @@ public class Config {
     }
 
     private void setDefaults(){
-        Bukkit.getLogger().info("Adding defaults");
-        config.addDefault(STORAGE_SECTION_PATH +".type", "sqlite");
-        config.options().copyDefaults(true);
-        plugin.saveConfig();
+        if (!config.isSet("storage")){
+            Bukkit.getLogger().info("Adding defaults");
+            config.addDefault(STORAGE_SECTION_PATH +".type", "sqlite");
+            config.options().copyDefaults(true);
+            plugin.saveConfig();
+        }
     }
 
     public void reload(){

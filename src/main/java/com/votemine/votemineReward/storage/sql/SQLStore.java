@@ -1,17 +1,15 @@
 package com.votemine.votemineReward.storage.sql;
 
-import com.votemine.votemineReward.models.PointsBalance;
-import com.votemine.votemineReward.models.PointsBalanceSQL;
-import com.votemine.votemineReward.models.Transaction;
+import com.votemine.votemineReward.models.*;
 import com.votemine.votemineReward.storage.Store;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class SQLStore implements Store {
 
     public abstract Connection open() throws SQLException;
-    public abstract void close();
 
     private final String logPointsTransactionQuery = "INSERT INTO transactions (uuid, points, reason, time) VALUES (?, ?, ?, ?)";
 
@@ -19,16 +17,23 @@ public abstract class SQLStore implements Store {
         Connection connection = open();
         connection.createStatement().execute(
                 "CREATE TABLE IF NOT EXISTS players ("
-                        + " uuid varchar(30) PRIMARY KEY,"
-                        + " points text NOT NULL"
-                        + ")");
+                        + " uuid varchar(36),"
+                        + " points text NOT NULL,"
+                        + " PRIMARY KEY (uuid),"
+                        + " FOREIGN KEY(uuid) REFERENCES uuids(uuid))");
         connection.createStatement().execute(
                 "CREATE TABLE IF NOT EXISTS transactions ("
-                        + " uuid varchar(30),"
+                        + " uuid varchar(36),"
                         + " points int NOT NULL,"
                         + " reason varchar(100),"
                         + " time TIMESTAMP NOT NULL,"
                         + "FOREIGN KEY(uuid) REFERENCES players(uuid))"
+        );
+        connection.createStatement().execute(
+                "CREATE TABLE IF NOT EXISTS uuids (" +
+                        "uuid varchar(36) UNIQUE NOT NULL," +
+                        "player_name varchar(16) NOT NULL" +
+                        ")"
         );
         connection.close();
     }
@@ -48,6 +53,16 @@ public abstract class SQLStore implements Store {
     }
 
     @Override
+    public CachedUUID getCachedUUID(String playername){
+        return new CachedUUIDSQL(playername, this);
+    }
+
+    @Override
+    public CachedUUID getCachedUUID(UUID uuid){
+        return new CachedUUIDSQL(uuid, this);
+    }
+
+    @Override
     public void insert(Transaction transaction){
         try {
             execPreparedStatement(logPointsTransactionQuery, preparedStatement -> {
@@ -61,5 +76,6 @@ public abstract class SQLStore implements Store {
             e.printStackTrace();
         }
     }
+
 
 }

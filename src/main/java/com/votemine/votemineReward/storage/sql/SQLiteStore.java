@@ -7,9 +7,6 @@ import java.sql.SQLException;
 
 public class SQLiteStore extends SQLStore {
 
-    private Connection connection;
-
-
     public SQLiteStore(){
         try {
             Connection connection = open();
@@ -26,12 +23,4 @@ public class SQLiteStore extends SQLStore {
         return DriverManager.getConnection(url);
     }
 
-
-    public void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

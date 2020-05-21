@@ -25,6 +25,8 @@ public final class VotemineReward extends JavaPlugin {
         commandManager.enableUnstableAPI("help");
         commandManager.getLocales().setDefaultLocale(Locale.FRENCH);
         Message.init(commandManager);
+        getServer().getPluginManager().registerEvents(new UUIDUpdater(this), this);
+        getServer().getPluginManager().registerEvents(new VotifierListener(this, bank), this);
         boot();
     }
 

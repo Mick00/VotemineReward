@@ -1,4 +1,9 @@
 package com.votemine.votemineReward.models;
 
-public interface CachedUUID {
+import java.util.UUID;
+
+public interface CachedUUID extends Model {
+    String getPlayername();
+    UUID getUUID();
+    void updatePlayername(String newPlayername);
 }

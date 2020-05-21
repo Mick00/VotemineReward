@@ -1,15 +1,12 @@
 package com.votemine.votemineReward.storage;
 
-import co.aikar.taskchain.BukkitTaskChainFactory;
-import co.aikar.taskchain.TaskChainFactory;
 import com.votemine.votemineReward.config.StorageConfig;
 import com.votemine.votemineReward.exceptions.PlayerNotFoundException;
+import com.votemine.votemineReward.models.CachedUUID;
 import com.votemine.votemineReward.models.PointsBalance;
 import com.votemine.votemineReward.models.Transaction;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -31,7 +28,12 @@ public class Storage {
     private static UUID playernameToUniqueId(String name) throws PlayerNotFoundException {
         Player player = Bukkit.getPlayer(name);
         if (player == null){
-            throw new PlayerNotFoundException(name);
+            CachedUUID uuid = store.getCachedUUID(name);
+            if (!uuid.exists()){
+                throw new PlayerNotFoundException(name);
+            } else {
+                return uuid.getUUID();
+            }
         }
         return player.getUniqueId();
     }
@@ -44,5 +46,11 @@ public class Storage {
         return getTransactions(playernameToUniqueId(name));
     }
 
+    public static CachedUUID getCachedUUID(UUID uuid){
+        return store.getCachedUUID(uuid);
+    }
 
+    public static CachedUUID getCachedUUID(String playername){
+        return store.getCachedUUID(playername);
+    }
 }
