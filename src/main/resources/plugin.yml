@@ -6,4 +6,4 @@ authors: [HOVOH]
 website: votemine.com
 commands:
   voteminereward:
-    aliases: ['voteshop','vmr']
+    aliases: ['vote', 'voteshop', 'vmr']

@@ -1,6 +1,6 @@
 package com.votemine.votemineReward.storage;
 
-import com.votemine.votemineReward.models.CachedUUID;
+import com.votemine.votemineReward.models.CachedPlayer;
 import com.votemine.votemineReward.models.PointsBalance;
 import com.votemine.votemineReward.models.Transaction;
 
@@ -11,7 +11,7 @@ public interface Store {
 
     PointsBalance getBalance(String uuid);
     List<Transaction> getTransactions(String uuid);
-    CachedUUID getCachedUUID(String playername);
-    CachedUUID getCachedUUID(UUID uuid);
+    CachedPlayer getCachedUUID(String playername);
+    CachedPlayer getCachedUUID(UUID uuid);
     void insert(Transaction transaction);
 }

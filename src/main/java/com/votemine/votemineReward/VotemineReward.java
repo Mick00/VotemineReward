@@ -16,13 +16,14 @@ public final class VotemineReward extends JavaPlugin {
     private PaperCommandManager commandManager;
     private RewardStore store;
     private Commands commands;
+    private ServerVoteObjective serverVoteObjective;
     @Override
     public void onEnable() {
         config = new Config(this);
         bank = new Bank(this);
         commandManager = new PaperCommandManager(this);
-        commandManager.addSupportedLanguage(Locale.FRENCH);
         commandManager.enableUnstableAPI("help");
+        commandManager.addSupportedLanguage(Locale.FRENCH);
         commandManager.getLocales().setDefaultLocale(Locale.FRENCH);
         Message.init(commandManager);
         getServer().getPluginManager().registerEvents(new UUIDUpdater(this), this);
@@ -35,15 +36,21 @@ public final class VotemineReward extends JavaPlugin {
             Storage.init(config.getStorageConfig());
             store = new RewardStore(config.getRewardsConfig(), config.getStoreConfig(), bank);
             getServer().getPluginManager().registerEvents(store, this);
-            commands = new Commands(this, bank, store);
+            if (config.getServerRewardConfig().enabled()) {
+                serverVoteObjective = new ServerVoteObjective(this);
+                getServer().getPluginManager().registerEvents(serverVoteObjective, this);
+            }
+            commands = new Commands(this);
             commandManager.registerCommand(commands);
         } catch (StorageException e) {
             Bukkit.getLogger().severe("Storage failed to initialize: "+e.getMessage());
+            Bukkit.getPluginManager().disablePlugin(this);
         }
     }
 
     public void reload(){
         HandlerList.unregisterAll(store);
+        HandlerList.unregisterAll(serverVoteObjective);
         commandManager.unregisterCommand(commands);
         config.reload();
         boot();
@@ -52,5 +59,22 @@ public final class VotemineReward extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+
+    public Config getVotemineConfig() {
+        return config;
+    }
+
+    public Bank getBank() {
+        return bank;
+    }
+
+    public RewardStore getStore() {
+        return store;
+    }
+
+    public ServerVoteObjective getServerVoteObjective() {
+        return serverVoteObjective;
     }
 }

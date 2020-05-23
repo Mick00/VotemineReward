@@ -2,7 +2,7 @@ package com.votemine.votemineReward.storage;
 
 import com.votemine.votemineReward.config.StorageConfig;
 import com.votemine.votemineReward.exceptions.PlayerNotFoundException;
-import com.votemine.votemineReward.models.CachedUUID;
+import com.votemine.votemineReward.models.CachedPlayer;
 import com.votemine.votemineReward.models.PointsBalance;
 import com.votemine.votemineReward.models.Transaction;
 import org.bukkit.Bukkit;
@@ -28,7 +28,7 @@ public class Storage {
     private static UUID playernameToUniqueId(String name) throws PlayerNotFoundException {
         Player player = Bukkit.getPlayer(name);
         if (player == null){
-            CachedUUID uuid = store.getCachedUUID(name);
+            CachedPlayer uuid = store.getCachedUUID(name);
             if (!uuid.exists()){
                 throw new PlayerNotFoundException(name);
             } else {
@@ -46,11 +46,11 @@ public class Storage {
         return getTransactions(playernameToUniqueId(name));
     }
 
-    public static CachedUUID getCachedUUID(UUID uuid){
+    public static CachedPlayer getCachedPlayer(UUID uuid){
         return store.getCachedUUID(uuid);
     }
 
-    public static CachedUUID getCachedUUID(String playername){
+    public static CachedPlayer getCachedPlayer(String playername){
         return store.getCachedUUID(playername);
     }
 }

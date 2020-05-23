@@ -3,7 +3,6 @@ package com.votemine.votemineReward;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChainFactory;
 import com.votemine.votemineReward.storage.Storage;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -23,7 +22,7 @@ public class UUIDUpdater implements Listener {
         UUID uuid = event.getPlayer().getUniqueId();
         String playername = event.getPlayer().getName();
         taskFactory.newChain()
-                .asyncFirst(() -> Storage.getCachedUUID(uuid))
+                .asyncFirst(() -> Storage.getCachedPlayer(uuid))
                 .asyncLast(cachedUUID -> cachedUUID.updatePlayername(playername))
                 .execute();
     }

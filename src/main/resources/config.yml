@@ -1,3 +1,4 @@
+link: https://votemine.com/fr/server/Station47
 storage:
   type: SQLite
   host: localhost
@@ -5,6 +6,10 @@ storage:
   database: votemine
   user: minevoter
   password: Pa$$w0rd
+serverReward:
+  price: 20
+  commands:
+    - say Objectif serveur atteint!
 rewards:
   congrats:
     price: 1

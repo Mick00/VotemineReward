@@ -53,12 +53,12 @@ public abstract class SQLStore implements Store {
     }
 
     @Override
-    public CachedUUID getCachedUUID(String playername){
+    public CachedPlayer getCachedUUID(String playername){
         return new CachedUUIDSQL(playername, this);
     }
 
     @Override
-    public CachedUUID getCachedUUID(UUID uuid){
+    public CachedPlayer getCachedUUID(UUID uuid){
         return new CachedUUIDSQL(uuid, this);
     }
 

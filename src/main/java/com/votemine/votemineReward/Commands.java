@@ -2,32 +2,49 @@ package com.votemine.votemineReward;
 
 import co.aikar.commands.*;
 import co.aikar.commands.annotation.*;
-import org.bukkit.command.Command;
+import com.votemine.votemineReward.config.Config;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.List;
 
-@CommandAlias("voteminereward|vmr|voteshop")
-@CommandPermission("votemine.admin")
+@CommandAlias("vote|vmr|voteshop")
 public class Commands extends BaseCommand {
 
     private VotemineReward votemineReward;
     private Bank bank;
     private RewardStore store;
+    private Config config;
+    private ServerVoteObjective voteObjective;
 
-    public Commands(VotemineReward votemineReward, Bank bank, RewardStore store){
+    public Commands(VotemineReward votemineReward){
         this.votemineReward = votemineReward;
-        this.bank = bank;
-        this.store = store;
+        this.bank = votemineReward.getBank();
+        this.store = votemineReward.getStore();
+        this.config = votemineReward.getVotemineConfig();
+        this.voteObjective = votemineReward.getServerVoteObjective();
     }
 
     @Subcommand("reload")
+    @CommandPermission("votemine.admin")
     @Description("{@@votemine.cmd-description.reload}")
-    public void reload(CommandSender sender, String[] args){
+    public void reload(CommandSender sender){
         votemineReward.reload();
         Message.sendWithHeader("votemine.cmd.reloaded", sender);
+    }
+
+    @Default
+    @Subcommand("link")
+    @Description("{@@votemine.cmd-description.link}")
+    public void link(CommandSender sender){
+        if (config.getServerRewardConfig().enabled()) {
+            Message.sendWithHeader("votemine.cmd.objective", sender, String.valueOf(voteObjective.getVoteCounter()), String.valueOf(voteObjective.getObjective()));
+        }
+        TextComponent clickableLink = new TextComponent(Message.trans("votemine.cmd.link", sender));
+        clickableLink.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, config.getVoteLink()));
+        sender.spigot().sendMessage(clickableLink);
     }
 
     @Subcommand("balance")
@@ -43,12 +60,17 @@ public class Commands extends BaseCommand {
     }
 
     @Subcommand("add")
+    @CommandPermission("votemine.admin")
     @Syntax("<player> <points>")
     @Description("{@@votemine.cmd-description.add}")
     @CommandCompletion("@players @nothing")
     public void addBalance(CommandSender sender, String[] args){
         if (args.length == 2){
-            bank.addFund(sender,args[0], Integer.parseInt(args[1]));
+            if (sender.hasPermission("votemine.admin")){
+                bank.addFund(sender,args[0], Integer.parseInt(args[1]));
+            } else {
+                Message.sendWithHeader("acf-core.permission_denied",sender);
+            }
         } else {
             List<String> search = new ArrayList<>();
             search.add(getName());
@@ -57,6 +79,7 @@ public class Commands extends BaseCommand {
     }
 
     @Subcommand("remove")
+    @CommandPermission("votemine.admin")
     @Syntax("<player> <points>")
     @Description("{@@votemine.cmd-description.remove}")
     @CommandCompletion("@players @nothing")
@@ -67,6 +90,7 @@ public class Commands extends BaseCommand {
     }
 
     @Subcommand("shop")
+    @CommandPermission("votemine.admin")
     @Description("{@@votemine.cmd-description.shop}")
     public void openShop(CommandSender sender, String[] args){
         if (sender instanceof Player){

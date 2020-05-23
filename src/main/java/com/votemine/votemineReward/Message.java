@@ -2,6 +2,7 @@ package com.votemine.votemineReward;
 
 import co.aikar.commands.PaperCommandManager;
 import co.aikar.locales.MessageKey;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -45,4 +46,10 @@ public class Message {
                 manager.getCommandIssuer(sender),
                 MessageKey.of(path));
     }
+
+    public static void broadcast(String path, String... args){
+        Bukkit.getOnlinePlayers().forEach(player-> sendWithHeader(path, player, args));
+        sendWithHeader(path, Bukkit.getConsoleSender(), args);
+    }
+
 }

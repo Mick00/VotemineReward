@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class CachedUUIDSQL implements CachedUUID {
+public class CachedUUIDSQL implements CachedPlayer {
 
     private UUID uuid = null;
     private String playername = null;
