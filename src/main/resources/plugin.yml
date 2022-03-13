@@ -4,6 +4,7 @@ api-version: "1.15"
 main: com.votemine.votemineReward.VotemineReward
 authors: [HOVOH]
 website: votemine.com
+softdepend: [PlaceholderAPI]
 commands:
   voteminereward:
     aliases: ['vote', 'voteshop', 'vmr']

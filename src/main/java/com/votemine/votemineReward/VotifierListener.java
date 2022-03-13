@@ -32,14 +32,20 @@ public class VotifierListener implements Listener {
         TaskChain<?> task = taskFactory.newChain();
         task.asyncFirst(()-> votes.get(playername))
                 .delay(100)
-                .abortIf(oldVoteCount -> !votes.containsKey(playername) || !oldVoteCount.equals(votes.get(playername)))
-                .async(oldVoteCount -> {
-                    bank.addFund(playername,oldVoteCount);
-                    Message.broadcast("votemine.broadcast.vote", playername, String.valueOf(oldVoteCount));
+                .sync(oldVoteCount -> {
+                    if (!votes.containsKey(playername) || !oldVoteCount.equals(votes.get(playername))){
+                       TaskChain.abort();
+                    }
                     votes.remove(playername);
-                    CachedPlayer player = Storage.getCachedPlayer(playername);
-                    task.setTaskData("player", player);
                     return oldVoteCount;
+                }).async(voteCount -> {
+                    CachedPlayer player = Storage.getCachedPlayer(playername);
+                    if (player.exists()){
+                        Message.broadcast("votemine.broadcast.vote", playername, String.valueOf(voteCount));
+                        bank.addFund(playername,voteCount);
+                    }
+                    task.setTaskData("player", player);
+                    return voteCount;
                 }).syncLast(voteCount -> {
                     CachedPlayer player = task.getTaskData("player");
                     Bukkit.getPluginManager().callEvent(new NewVotesEvent(player, voteCount));

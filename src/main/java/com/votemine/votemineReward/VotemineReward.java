@@ -2,6 +2,7 @@ package com.votemine.votemineReward;
 
 import co.aikar.commands.PaperCommandManager;
 import com.votemine.votemineReward.config.Config;
+import com.votemine.votemineReward.placeholders.VoteminePapiExpansion;
 import com.votemine.votemineReward.storage.Storage;
 import com.votemine.votemineReward.storage.StorageException;
 import org.bukkit.Bukkit;
@@ -16,7 +17,7 @@ public final class VotemineReward extends JavaPlugin {
     private PaperCommandManager commandManager;
     private RewardStore store;
     private Commands commands;
-    private ServerVoteObjective serverVoteObjective;
+    private ServerVoteObjective serverVoteObjective = null;
     @Override
     public void onEnable() {
         config = new Config(this);
@@ -42,6 +43,11 @@ public final class VotemineReward extends JavaPlugin {
             }
             commands = new Commands(this);
             commandManager.registerCommand(commands);
+
+            if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null){
+                Bukkit.getLogger().info("Enabling placeholders");
+                new VoteminePapiExpansion(serverVoteObjective).register();
+            }
         } catch (StorageException e) {
             Bukkit.getLogger().severe("Storage failed to initialize: "+e.getMessage());
             Bukkit.getPluginManager().disablePlugin(this);

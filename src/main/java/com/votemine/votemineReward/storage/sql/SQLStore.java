@@ -16,6 +16,12 @@ public abstract class SQLStore implements Store {
     protected void initDatabase() throws SQLException {
         Connection connection = open();
         connection.createStatement().execute(
+                "CREATE TABLE IF NOT EXISTS uuids (" +
+                        "uuid varchar(36) UNIQUE NOT NULL," +
+                        "player_name varchar(16) NOT NULL" +
+                        ")"
+        );
+        connection.createStatement().execute(
                 "CREATE TABLE IF NOT EXISTS players ("
                         + " uuid varchar(36),"
                         + " points text NOT NULL,"
@@ -28,12 +34,6 @@ public abstract class SQLStore implements Store {
                         + " reason varchar(100),"
                         + " time TIMESTAMP NOT NULL,"
                         + "FOREIGN KEY(uuid) REFERENCES players(uuid))"
-        );
-        connection.createStatement().execute(
-                "CREATE TABLE IF NOT EXISTS uuids (" +
-                        "uuid varchar(36) UNIQUE NOT NULL," +
-                        "player_name varchar(16) NOT NULL" +
-                        ")"
         );
         connection.close();
     }

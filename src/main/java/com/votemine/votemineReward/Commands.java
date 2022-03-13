@@ -3,6 +3,7 @@ package com.votemine.votemineReward;
 import co.aikar.commands.*;
 import co.aikar.commands.annotation.*;
 import com.votemine.votemineReward.config.Config;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
@@ -27,12 +28,9 @@ public class Commands extends BaseCommand {
         this.voteObjective = votemineReward.getServerVoteObjective();
     }
 
-    @Subcommand("reload")
-    @CommandPermission("votemine.admin")
-    @Description("{@@votemine.cmd-description.reload}")
-    public void reload(CommandSender sender){
-        votemineReward.reload();
-        Message.sendWithHeader("votemine.cmd.reloaded", sender);
+    @HelpCommand
+    public void helpMenu(CommandSender sender, CommandHelp help){
+        help.showHelp();
     }
 
     @Default
@@ -43,6 +41,7 @@ public class Commands extends BaseCommand {
             Message.sendWithHeader("votemine.cmd.objective", sender, String.valueOf(voteObjective.getVoteCounter()), String.valueOf(voteObjective.getObjective()));
         }
         TextComponent clickableLink = new TextComponent(Message.trans("votemine.cmd.link", sender));
+        clickableLink.setColor(ChatColor.GOLD);
         clickableLink.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, config.getVoteLink()));
         sender.spigot().sendMessage(clickableLink);
     }
@@ -58,6 +57,26 @@ public class Commands extends BaseCommand {
             bank.getBalance(sender, sender.getName());
         }
     }
+
+    @Subcommand("shop")
+    @Description("{@@votemine.cmd-description.shop}")
+    public void openShop(CommandSender sender, String[] args){
+        if (sender instanceof Player){
+            store.open(((Player) sender));
+        } else {
+            Message.send("votemine.cmd.only_players", sender);
+        }
+    }
+
+
+    @Subcommand("reload")
+    @CommandPermission("votemine.admin")
+    @Description("{@@votemine.cmd-description.reload}")
+    public void reload(CommandSender sender){
+        votemineReward.reload();
+        Message.sendWithHeader("votemine.cmd.reloaded", sender);
+    }
+
 
     @Subcommand("add")
     @CommandPermission("votemine.admin")
@@ -87,23 +106,6 @@ public class Commands extends BaseCommand {
         if (args.length == 2){
             bank.removeFund(sender, args[0], Integer.parseInt(args[1]));
         }
-    }
-
-    @Subcommand("shop")
-    @CommandPermission("votemine.admin")
-    @Description("{@@votemine.cmd-description.shop}")
-    public void openShop(CommandSender sender, String[] args){
-        if (sender instanceof Player){
-            store.open(((Player) sender));
-        } else {
-            Message.send("votemine.cmd.only_players", sender);
-        }
-    }
-
-    @Default
-    @HelpCommand
-    public void helpMenu(CommandSender sender, CommandHelp help){
-        help.showHelp();
     }
 
 }
