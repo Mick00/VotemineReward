@@ -41,9 +41,12 @@ public class Commands extends BaseCommand {
             Message.sendWithHeader("votemine.cmd.objective", sender, String.valueOf(voteObjective.getVoteCounter()), String.valueOf(voteObjective.getObjective()));
         }
         TextComponent clickableLink = new TextComponent(Message.trans("votemine.cmd.link", sender));
-        clickableLink.setColor(ChatColor.GOLD);
+        clickableLink.setColor(ChatColor.LIGHT_PURPLE);
         clickableLink.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, config.getVoteLink()));
+        TextComponent voteShopMessage = new TextComponent(Message.trans("votemine.cmd.voteshop", sender));
+        voteShopMessage.setColor(ChatColor.GOLD);
         sender.spigot().sendMessage(clickableLink);
+        sender.spigot().sendMessage(voteShopMessage);
     }
 
     @Subcommand("balance")
